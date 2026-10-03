@@ -1,0 +1,147 @@
+[organisation bloquée: assemblee nationale] Réunions
+[motif négatif fort: 'reunion publique'] Reunion publique Clin Paluel Penly CD76 20191009
+[motif négatif fort: 'reunion publique'] Reunion publique Clin Paluel Penly CD76 20191016
+[motif négatif fort: 'reunions? d.?information'] Les réunions d'information - Agrément assistant(e) maternel(le) en Sarthe.
+[motif négatif fort: 'reunions? d.?information'] Les réunions d'information - Agrément assistant familial en Sarthe.
+[aucun signal La Réunion] Core data at 200m on the population
+[aucun signal La Réunion] Consumption of natural, agricultural and forestry areas from 1 January 2009 to 1 January 2024
+[aucun signal La Réunion] Décisions pdf
+[motif négatif fort: 'reunion publique'] Reunion publique Clin Paluel Penly CD76 20181017
+[motif négatif fort: 'reunion de concertation'] Fiches fictives de Réunion de Concertation Pluridisciplinaire (RCP)
+[motif négatif fort: 'reunions? d.?information'] Les réunions d'information - Agrément assistant familial en Sarthe.
+[motif négatif fort: 'reunion des operas'] Datasets Opéra - Activités maisons d'opéra -  Réunion des Opéras de France
+[motif négatif fort: 'reunion de concertation'] Jeu d'exercice de fiches de Réunion de Concertation Pluridisciplinaire (RCP)
+[motif négatif fort: 'hm revenue'] HM Revenue & Customs officials' meetings with tobacco stakeholders
+[motif négatif fort: 'banque municipale'] Décisions de la Banque municipale de Chios
+[organisation bloquée: statistisches bundesamt] Starts (Flight Stage): Germany, years, reporting airport, country of follow-up airport
+[organisation bloquée: statistisches bundesamt] Beginners, Freight Invitations (OFOD): Germany, years, reporting airport, 1. Destination country
+[aucun signal La Réunion] Administrative Referential - COM
+[aucun signal La Réunion] Administrative Departments as of January 1, 2018
+[aucun signal La Réunion] Administrative regions as of 1 January 2018
+[aucun signal La Réunion] Circonscriptions administratives de bassin 2018
+[aucun signal La Réunion] WISE 2016 GroundWaterBody_FR_20170406
+[aucun signal La Réunion] Régions administratives au 1er janvier 2022
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: Methodologies for the assessment of groundwater bodies by WFD basin
+[aucun signal La Réunion] Remontée des données des Etats des lieux DCE 2013 au niveau national
+[aucun signal La Réunion] Exceedance of regulatory thresholds for pesticides in rivers (Territorial diagnostics strategy Ecophyto 2030)
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBody_FR_20170324
+[aucun signal La Réunion] Remontée des données des Etats des lieux DCE 2019 au niveau national
+[aucun signal La Réunion] Municipal biodiversity atlas – Data from funded projects
+[aucun signal La Réunion] Inventory 2023 French ports (points)
+[aucun signal La Réunion] Basin administrative divisions 2025
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: fichiers SIG des masses d'eau de surface DCE par bassin au format WISE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur les pressions et impacts par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: sites de surveillance des masses d'eau de surface par bassin DCE
+[aucun signal La Réunion] WISE 2016 ProtectedAreaPoint_FR_20161007
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur l'état quantitatif et chimique des masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: méthodologies d'évaluation des masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: limites des sous-bassins DCE ultramarins au format WISE
+[aucun signal La Réunion] Inventaire 2023 Ports français (points)
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: inventaire et caractéristiques des masses d'eau de surface par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2012: bilan à mi-parcours des programmes de mesures.
+[motif négatif fort: 'rooms? for rent'] Rooms for rent
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: Monitoring sites for groundwater bodies per WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: GIS files of groundwater bodies per DCE basin in WISE format
+[aucun signal La Réunion] 2023 Basin Administrative Divisions
+[aucun signal La Réunion] Administrative municipalities as of 1 January 2020
+[aucun signal La Réunion] Reporting of WFD 2013 inventory data at national level
+[aucun signal La Réunion] Administrative municipalities on 1 January 2023
+[motif négatif fort: 'rent a room'] Where to rent a room?
+[aucun signal La Réunion] Administrative municipalities as at 1 January 2025
+[aucun signal La Réunion] Reporting Water Framework Directive 2012: Mid-term review of the programmes of measures.
+[aucun signal La Réunion] Administrative regions on 1 January 2023
+[aucun signal La Réunion] BNV-D Traceability (data on sales of plant protection products)
+[aucun signal La Réunion] 6 ème Circonscription (en partie) - A0
+[aucun signal La Réunion] Circonscriptions administratives de bassin 2021
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: méthodologies d'évaluation des masses d'eau de surface par bassin DCE
+[motif négatif fort: 'reunion publique'] Découpage géographique des anciens secteurs (réunion publique de quartier) - Ville de Lorient
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur les exemptions au titre chimique des masses d'eau de surface par bassin DCE
+[aucun signal La Réunion] WISE 2016 ProtectedArea_FR_20170110 shellfish
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur les pressions et impacts sur les masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010:synthèses sur l'état chimique des masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBodyLine_FR_20170410
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: limites des bassins DCE ultramarins
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: sites de surveillance des masses d'eau souterraine par bassin DCE
+[aucun signal La Réunion] Basin administrative divisions 2024
+[aucun signal La Réunion] Régions administratives au 1er janvier 2019
+[aucun signal La Réunion] Circonscriptions administratives de bassin 2019
+[aucun signal La Réunion] WISE 2016 RiverBasinDistrict_EN_20161109
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBodyCentreline_FR_20170207
+[aucun signal La Réunion] WISE 2016 GroundWaterBody_EN_20170406
+[aucun signal La Réunion] Administrative departments as at 1 January 2025
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: limits of WISE-format ultramarine ELD sub-basins
+[aucun signal La Réunion] 1st Division - A0
+[aucun signal La Réunion] Départements administratifs au 1er janvier 2019
+[aucun signal La Réunion] Administrative departments on 1 January 2023
+[aucun signal La Réunion] Résultats des mesures à la station de la 7ème campagne Nitrates 2018-2019 dans les eaux de surface et dans les eaux souterraines
+[aucun signal La Réunion] WISE 2016 GroundWaterBodyHorizon_FR_20160726
+[aucun signal La Réunion] Zoning Planning - ZPL
+[aucun signal La Réunion] Reporting Water Framework Directive 2016: XML files reported
+[aucun signal La Réunion] Hydrogeology - SAQ
+[aucun signal La Réunion] Circonscriptions administratives de bassin 2022
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: summaries on pressures and impacts on groundwater bodies per WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: summaries on the ecological and chemical status of surface water bodies by WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: summaries on increasing trends in pollutants in groundwater bodies per WFD basin
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBody_EN_20170324
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: management plan and programmes of measures by WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: inventory and characteristics of surface water bodies per WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: WFD Basin Protected Areas
+[aucun signal La Réunion] Resource Quality Management Zonings (RQMAs)
+[aucun signal La Réunion] Report Water Framework Directive 2010: summaries on the chemical status of groundwater bodies by WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: Syntheses on the chemical status of surface water bodies by WFD basin
+[motif négatif fort: 'reunions? des instances'] États des absences des conseillères départementales et conseillers départementaux aux réunions des instances délibératives et des commissions organiques susceptibles d'entraîner une modulation des indemnités
+[motif négatif fort: 'reunions? des instances'] États des réductions des indemnités appliquées aux conseillères départementales et conseillers départementaux en raison de leurs absences aux réunions des instances délibératives et des commissions organiques
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: inventaire et caractéristiques des masses d'eau souterraine par bassin DCE
+[aucun signal La Réunion] WISE 2016 SubUnit_FR_20161018
+[aucun signal La Réunion] Piezometers
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur les exemptions pour le bon état écologique des masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur l'état écologique et chimique des masses d'eau de surface par bassin DCE
+[organisation bloquée: statistisches bundesamt] Landings (flight stage): Germany, months, reporting airport, country of departure airport
+[organisation bloquée: statistisches bundesamt] Passengers (beginners) (air transport): Germany, months (until 2010), airport of origin, country of destination
+[organisation bloquée: statistisches bundesamt] Disembarkation, freight unloading (OFOD): Germany, months, reporting airport, country of origin
+[organisation bloquée: statistisches bundesamt] Take-offs (air transport): Germany, months (until 2010), airport of origin, country of destination
+[motif négatif titre: 'meetings? (with|and|-)'] Meetings and participants
+[motif négatif titre: 'digital care territories'] Meeting - Digital Care Territories
+[motif négatif fort: 'invitation a la reunion'] Invitation à la réunion
+[organisation bloquée: statistisches bundesamt] Landings (flight stage): Germany, years, reporting airport, country of departure airport
+[aucun signal La Réunion] Results of measurements at the station of the 8th Nitrates season 2022-2023 in surface water and groundwater
+[aucun signal La Réunion] Administrative regions on 1 January 2025
+[aucun signal La Réunion] Clean-up works - ODP - SysTreatmentEauxUsees
+[aucun signal La Réunion] WISE 2016 SubUnit_FR_20161018
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: monitoring programme for surface water bodies per WFD basin
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2022: fichiers XML rapportés
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur l'état quantitatif des masses d'eau souterraines par bassin DCE
+[aucun signal La Réunion] WISE 2016 RiverBasinDistrict_FR_20161109
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: synthèses sur l'état écologique des masses d'eau de surface par bassin DCE
+[aucun signal La Réunion] Administration and service to users - Equipment and services
+[aucun signal La Réunion] Administrative departments as of 1 January 2021
+[aucun signal La Réunion] Administrative departments as of 1 January 2024
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBodyCentreline_FR_20170207
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: GIS files of protected areas by WFD basin
+[motif négatif fort: 'salles? de conferences'] Salles de conférences - Toulouse
+[aucun signal La Réunion] Meeting rooms of the State in Brittany
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: fichiers SIG des masses d'eau souterraine par bassin DCE au format WISE
+[aucun signal La Réunion] BNV-D Traçabilité (données sur les ventes de produits phytopharmaceutiques)
+[aucun signal La Réunion] Atlas de la biodiversité communale – Données des projets financés
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: autorités compétentes, bassins et sous-unités
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2010: plan de gestion et programmes de mesures par bassin DCE
+[aucun signal La Réunion] Rapportage Directive Cadre sur l'Eau 2016: fichiers XML rapportés
+[aucun signal La Réunion] WISE 2016 ProtectedAreaPoint_EN_20161007
+[aucun signal La Réunion] Results of measurements at the station of the 7th Nitrates campaign 2018-2019 in surface water and groundwater
+[aucun signal La Réunion] Water Masses Watercourse - Meeting - Version Rapportage 2010
+[aucun signal La Réunion] Reporting Water Framework Directive 2022: XML files reported
+[aucun signal La Réunion] Zonages techniques et réglementaires du domaine de l'eau - ZON
+[aucun signal La Réunion] Hydrographie - ETH
+[aucun signal La Réunion] Environmental Regulatory Areas (ERA)
+[aucun signal La Réunion] Qualitometers
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: syntheses on the quantitative and chemical status of groundwater bodies by WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: syntheses on the ecological status of surface water bodies by WFD basin
+[aucun signal La Réunion] WISE 2016 GroundWaterBodyHorizon_FR_20160726
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: Inventory and characteristics of groundwater bodies per WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: methodologies for assessment of surface water bodies per WFD basin
+[aucun signal La Réunion] WISE 2016 SurfaceWaterBodyLine_EN_20170410
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: syntheses on exemptions for good environmental status of groundwater bodies per WFD basin
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: summaries of the status and objectives of water bodies, confidence levels, exemption criteria per WFD basin and for France as a whole.
+[aucun signal La Réunion] Reporting Water Framework Directive 2010: syntheses on exemptions from the objective of achieving good chemical status of groundwater bodies per WFD basin
+[aucun signal La Réunion] WISE 2016 MonitoringSite_EN_20161115
+[aucun signal La Réunion] Inventaire 2023 Ports français
