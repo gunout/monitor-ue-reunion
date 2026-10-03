@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>🇷🇪 Monitor La Réunion 974 — Open Data</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --blue-france:#000091;
+  --blue-france-hi:#1212ff;
+  --blue-france-soft:#e3e3fd;
+  --blue-eu:#003399;
+  --blue-eu-hi:#0055ff;
+  --blue-eu-soft:#e6ecff;
+  --gold-eu:#ffcc00;
+  --red-marianne:#E1000F;
+  --red-marianne-soft:#ffe9e9;
+  --white:#ffffff;
+  --grey-50:#f6f6f6;
+  --grey-100:#eeeeee;
+  --grey-200:#e5e5e5;
+  --grey-500:#929292;
+  --grey-700:#3a3a3a;
+  --grey-900:#1e1e1e;
+  --green-bourgeon:#18753c;
+  --green-emeraude:#00a95f;
+  --green-soft:#e6f7ee;
+  --yellow-tournesol:#ffb800;
+  --amber-soft:#fff4d6;
+  --reunion-blue:#0066cc;
+  --reunion-volcano:#d94d1e;
+  --font-mono:'SF Mono',Menlo,Consolas,'Courier New',monospace;
+  --font-sans:'Marianne','system-ui',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+
+html{height:100%}
+body{
+  font-family:var(--font-sans);
+  background:var(--grey-50);
+  color:var(--grey-900);
+  font-size:13px;line-height:1.5;
+  min-height:100%;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--grey-100)}
+::-webkit-scrollbar-thumb{background:var(--grey-500);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--reunion-blue)}
+
+/* Bandeau tricolore */
+.reunion-band{
+  height:6px;
+  background:linear-gradient(to right,
+    var(--blue-france) 0%, var(--blue-france) 25%,
+    var(--white) 25%, var(--white) 50%,
+    var(--red-marianne) 50%, var(--red-marianne) 75%,
+    var(--gold-eu) 75%, var(--gold-eu) 100%);
+}
+
+/* Bloc marque */
+.bloc-marque{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+}
+.bloc-marque-logo{
+  font-weight:700;font-size:13px;line-height:1.15;
+  color:var(--reunion-blue);letter-spacing:0.3px;
+  text-transform:uppercase;
+  border-right:1px solid var(--grey-200);
+  padding-right:12px;
+}
+.bloc-marque-devise{
+  font-size:10px;font-weight:400;color:var(--grey-700);
+  line-height:1.3;letter-spacing:0.5px;
+}
+.bloc-marque-devise em{
+  display:block;font-style:normal;
+  text-transform:uppercase;letter-spacing:1.2px;
+  font-size:9px;color:var(--grey-500);
+}
+
+/* Topbar */
+.topbar{
+  background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+  display:flex;align-items:center;
+  padding:10px 16px;gap:12px;
+  position:sticky;top:6px;z-index:100;
+  flex-wrap:wrap;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);
+}
+.brand{
+  font-size:14px;font-weight:700;
+  color:var(--reunion-blue);letter-spacing:0.3px;
+  display:flex;align-items:center;gap:8px;
+  white-space:nowrap;
+}
+.brand .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green-emeraude);
+  box-shadow:0 0 0 3px rgba(0,169,95,0.2);
+  animation:pulse 1.8s infinite;flex-shrink:0;
+}
+.brand .dot.offline{
+  background:var(--red-marianne);
+  box-shadow:0 0 0 3px rgba(225,0,15,0.2);
+  animation:none;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.85)}
+}
+.brand .sub{
+  color:var(--grey-500);font-weight:400;
+  font-size:12px;font-family:var(--font-mono);
+}
+
+.tabs{
+  display:flex;gap:4px;order:3;width:100%;
+  overflow-x:auto;padding-bottom:2px;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  background:transparent;border:none;
+  color:var(--grey-700);font-size:12px;font-weight:500;
+  padding:8px 14px;border-radius:4px;cursor:pointer;
+  transition:all 0.15s;display:flex;align-items:center;gap:6px;
+  white-space:nowrap;flex-shrink:0;
+  border-bottom:2px solid transparent;
+}
+.tab:hover{background:var(--blue-eu-soft);color:var(--reunion-blue)}
+.tab.active{
+  background:var(--blue-eu-soft);
+  color:var(--reunion-blue);
+  border-bottom-color:var(--reunion-blue);
+  font-weight:700;
+}
+.tab .count{
+  font-family:var(--font-mono);font-size:10px;
+  background:var(--grey-100);padding:1px 6px;border-radius:8px;
+  color:var(--grey-700);
+}
+.tab.active .count{
+  background:var(--reunion-blue);color:var(--white);
+}
+
+.topbar-right{
+  margin-left:auto;display:flex;gap:14px;
+  font-family:var(--font-mono);font-size:11px;
+  align-items:center;flex-wrap:wrap;order:2;
+}
+.topbar-stat{
+  display:flex;gap:5px;color:var(--grey-700);
+  align-items:center;white-space:nowrap;
+}
+.topbar-stat .val{
+  color:var(--reunion-blue);font-weight:700;
+  padding:2px 6px;border-radius:3px;background:var(--blue-eu-soft);
+}
+.topbar-stat .val.green{color:var(--green-bourgeon);background:var(--green-soft)}
+.topbar-stat .val.amber{color:#8a5e00;background:var(--amber-soft)}
+.topbar-stat .val.red{color:var(--red-marianne);background:var(--red-marianne-soft)}
+
+/* Auto-refresh toggle */
+.autorefresh{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:4px;
+  background:var(--grey-50);border:1px solid var(--grey-200);
+  font-family:var(--font-mono);font-size:11px;
+  cursor:pointer;transition:all 0.15s;
+  user-select:none;
+}
+.autorefresh:hover{border-color:var(--reunion-blue);background:var(--blue-eu-soft)}
+.autorefresh.on{
+  background:var(--green-soft);
+  border-color:var(--green-emeraude);
+  color:var(--green-bourgeon);
+}
+.autorefresh.off{
+  background:var(--grey-100);
+  color:var(--grey-500);
+}
+.autorefresh-switch{
+  position:relative;width:26px;height:14px;
+  background:var(--grey-500);border-radius:7px;
+  transition:background 0.2s;flex-shrink:0;
+}
+.autorefresh.on .autorefresh-switch{background:var(--green-emeraude)}
+.autorefresh-switch::after{
+  content:'';position:absolute;top:1px;left:1px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--white);transition:transform 0.2s;
+}
+.autorefresh.on .autorefresh-switch::after{transform:translateX(12px)}
+.autorefresh-countdown{
+  font-weight:700;color:inherit;
+  min-width:34px;text-align:right;
+}
+
+/* Layout principal */
+.app{
+  display:grid;
+  grid-template-columns:300px 1fr 320px;
+  height:calc(100vh - 130px);
+  overflow:hidden;gap:0;
+}
+@media(max-width:1200px){.app{grid-template-columns:260px 1fr 280px}}
+
+/* Sidebar gauche */
+.sidebar{
+  background:var(--white);
+  border-right:1px solid var(--grey-200);
+  display:flex;flex-direction:column;
+  overflow:hidden;min-height:0;
+}
+.sb-head{
+  padding:14px 16px;
+  border-bottom:1px solid var(--grey-200);
+  background:var(--grey-50);flex-shrink:0;
+}
+.sb-title{
+  font-size:12px;font-weight:700;
+  color:var(--reunion-blue);
+  letter-spacing:0.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.sb-title::before{
+  content:'';width:4px;height:14px;
+  background:var(--reunion-volcano);
+}
+.sb-count{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--grey-500);margin-top:6px;
+}
+.sb-actions{
+  display:flex;gap:4px;padding:8px 14px;
+  border-bottom:1px solid var(--grey-200);
+  background:var(--grey-50);flex-shrink:0;
+}
+.sb-actions button{
+  flex:1;background:var(--white);
+  border:1px solid var(--grey-200);
+  color:var(--grey-700);
+  font-size:10px;font-weight:600;
+  padding:5px 6px;border-radius:3px;
+  cursor:pointer;transition:all 0.15s;
+  font-family:var(--font-sans);
+}
+.sb-actions button:hover{
+  border-color:var(--reunion-blue);
+  color:var(--reunion-blue);
+  background:var(--blue-eu-soft);
+}
+.sb-search{
+  padding:10px 14px;
+  border-bottom:1px solid var(--grey-200);
+  flex-shrink:0;
+}
+.sb-search input{
+  width:100%;background:var(--white);
+  border:1px solid var(--grey-200);
+  border-radius:4px;color:var(--grey-900);
+  padding:9px 12px;font-size:13px;
+  font-family:var(--font-sans);
+}
+.sb-search input:focus{
+  outline:none;border-color:var(--reunion-blue);
+  box-shadow:0 0 0 2px var(--blue-eu-soft);
+}
+.sb-list{
+  flex:1;overflow-y:auto;padding:8px;
+  min-height:0;
+}
+
+.portal-item{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-left:4px solid var(--grey-500);
+  border-radius:4px;
+  padding:8px 10px;margin-bottom:5px;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;gap:8px;
+}
+.portal-item:hover{
+  border-color:var(--reunion-blue);
+  background:var(--blue-eu-soft);
+  transform:translateX(2px);
+}
+.portal-item.active{
+  background:var(--blue-eu-soft);
+  border-color:var(--reunion-blue);
+  border-left-color:var(--reunion-blue);
+  box-shadow:0 0 0 2px var(--blue-eu-soft);
+}
+.portal-item.active .portal-check{
+  background:var(--reunion-blue);
+  border-color:var(--reunion-blue);
+  color:var(--white);
+}
+.portal-check{
+  width:16px;height:16px;
+  border:2px solid var(--grey-500);
+  border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:11px;font-weight:700;
+  color:transparent;transition:all 0.15s;
+}
+.portal-flag{font-size:18px;flex-shrink:0}
+.portal-info{flex:1;min-width:0}
+.portal-name{
+  font-size:12px;font-weight:700;
+  color:var(--grey-900);line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.portal-type{
+  font-family:var(--font-mono);font-size:9px;
+  color:var(--grey-500);text-transform:uppercase;
+  margin-top:2px;letter-spacing:0.5px;
+}
+.portal-count{
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+  background:var(--grey-100);color:var(--grey-700);
+  padding:2px 6px;border-radius:8px;flex-shrink:0;
+}
+.portal-item.active .portal-count{
+  background:var(--reunion-blue);color:var(--white);
+}
+
+/* Centre */
+.center{
+  background:var(--grey-50);
+  display:flex;flex-direction:column;
+  overflow:hidden;min-height:0;
+}
+.search-bar{
+  padding:14px 16px;
+  background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+}
+.search-bar input[type=text]{
+  flex:1;min-width:200px;
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-radius:4px;color:var(--grey-900);
+  padding:11px 14px;font-size:14px;
+  font-family:var(--font-sans);
+}
+.search-bar input[type=text]:focus{
+  outline:none;border-color:var(--reunion-blue);
+  box-shadow:0 0 0 2px var(--blue-eu-soft);
+}
+.search-bar select{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-radius:4px;color:var(--grey-900);
+  padding:11px 12px;font-size:13px;
+  font-family:var(--font-sans);
+}
+.search-bar select:focus{
+  outline:none;border-color:var(--reunion-blue);
+  box-shadow:0 0 0 2px var(--blue-eu-soft);
+}
+.search-btn{
+  background:var(--reunion-blue);color:var(--white);
+  border:1px solid var(--reunion-blue);
+  font-size:13px;font-weight:700;
+  padding:11px 20px;border-radius:4px;
+  cursor:pointer;letter-spacing:0.3px;
+  transition:all 0.15s;white-space:nowrap;
+}
+.search-btn:hover{
+  background:var(--blue-eu-hi);
+  border-color:var(--blue-eu-hi);
+}
+.search-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+.mode-tabs{
+  display:flex;gap:0;padding:0 10px;
+  border-bottom:1px solid var(--grey-200);
+  background:var(--white);flex-shrink:0;
+  overflow-x:auto;scrollbar-width:none;
+}
+.mode-tabs::-webkit-scrollbar{display:none}
+.mode-tab{
+  background:transparent;border:none;
+  color:var(--grey-700);font-size:12px;font-weight:500;
+  padding:10px 14px;cursor:pointer;
+  letter-spacing:0.2px;transition:all 0.15s;
+  white-space:nowrap;
+  border-bottom:3px solid transparent;
+}
+.mode-tab:hover{background:var(--grey-50);color:var(--reunion-blue)}
+.mode-tab.active{
+  color:var(--reunion-blue);
+  border-bottom-color:var(--reunion-blue);
+  font-weight:700;
+}
+
+.results{
+  flex:1;overflow-y:auto;padding:14px;
+  min-height:0;
+}
+
+.result-card{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-left:4px solid var(--reunion-blue);
+  border-radius:4px;
+  padding:14px 16px;margin-bottom:10px;
+  transition:all 0.15s;
+  position:relative;
+}
+.result-card:hover{
+  border-color:var(--reunion-blue);
+  box-shadow:0 4px 12px rgba(0,102,204,0.08);
+  transform:translateX(2px);
+}
+.result-card.is-added{
+  border-left-color:var(--green-emeraude);
+  background:linear-gradient(to right, var(--green-soft) 0%, var(--white) 30%);
+}
+.result-card.is-updated{
+  border-left-color:var(--yellow-tournesol);
+  background:linear-gradient(to right, var(--amber-soft) 0%, var(--white) 30%);
+  cursor:pointer;
+}
+.result-card.is-removed{
+  border-left-color:var(--red-marianne);
+  background:linear-gradient(to right, var(--red-marianne-soft) 0%, var(--white) 30%);
+  opacity:0.75;
+}
+.result-card.is-added,
+.result-card.is-removed{cursor:pointer}
+.result-card[data-clickable="true"]::after{
+  content:'🔍 Cliquer pour comparer';
+  position:absolute;
+  bottom:8px;right:12px;
+  font-size:10px;
+  color:#8a5e00;
+  font-family:var(--font-mono);
+  opacity:0;
+  transition:opacity 0.15s;
+}
+.result-card[data-clickable="true"]:hover::after{opacity:0.8}
+
+.rc-head{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:6px;
+}
+.rc-title{
+  font-size:14px;font-weight:700;
+  color:var(--grey-900);flex:1;line-height:1.35;
+}
+.rc-title a{color:var(--grey-900);text-decoration:none}
+.rc-title a:hover{
+  color:var(--reunion-blue);text-decoration:underline;
+}
+.rc-badges{
+  display:flex;gap:4px;flex-wrap:wrap;
+  justify-content:flex-end;flex-shrink:0;
+}
+.rc-badge{
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  padding:3px 7px;border-radius:3px;
+  text-transform:uppercase;white-space:nowrap;
+  letter-spacing:0.5px;
+}
+.rc-badge.portal{background:var(--reunion-blue);color:var(--white)}
+.rc-badge.src{background:var(--grey-100);color:var(--grey-700);border:1px solid var(--grey-200)}
+.rc-badge.change-added{background:var(--green-emeraude);color:var(--white)}
+.rc-badge.change-updated{background:var(--yellow-tournesol);color:var(--grey-900)}
+.rc-badge.change-removed{background:var(--red-marianne);color:var(--white)}
+
+.rc-desc{
+  font-size:12px;color:var(--grey-700);
+  line-height:1.55;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.rc-meta{
+  display:flex;gap:6px;
+  font-family:var(--font-mono);font-size:10px;
+  color:var(--grey-500);flex-wrap:wrap;margin-top:8px;
+}
+.rc-meta .tag{
+  background:var(--grey-50);
+  padding:3px 8px;border-radius:3px;
+  border:1px solid var(--grey-200);
+  color:var(--grey-700);
+}
+.rc-org{
+  color:var(--grey-700);font-weight:600;
+  font-size:12px;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+
+.empty,.loading{
+  text-align:center;padding:60px 20px;
+  color:var(--grey-500);font-size:14px;
+}
+.spin{
+  width:40px;height:40px;
+  border:3px solid var(--grey-200);
+  border-top-color:var(--reunion-blue);
+  border-radius:50%;
+  animation:sp 0.8s linear infinite;
+  margin:0 auto 14px;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+.error-box{
+  background:var(--red-marianne-soft);
+  border:1px solid var(--red-marianne);
+  border-left-width:4px;
+  color:var(--red-marianne);
+  padding:16px;border-radius:4px;
+  font-size:13px;margin:12px;
+}
+
+.portal-stats{
+  display:flex;gap:4px;flex-wrap:wrap;
+  padding:8px 14px;
+  background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+  flex-shrink:0;
+  max-height:80px;overflow-y:auto;
+}
+.portal-stat{
+  font-family:var(--font-mono);font-size:10px;
+  padding:3px 8px;border-radius:12px;
+  background:var(--grey-50);
+  border:1px solid var(--grey-200);
+  color:var(--grey-700);
+  white-space:nowrap;
+}
+.portal-stat.ok{background:var(--green-soft);border-color:var(--green-emeraude);color:var(--green-bourgeon)}
+.portal-stat.err{background:var(--red-marianne-soft);border-color:var(--red-marianne);color:var(--red-marianne)}
+.portal-stat strong{color:inherit;font-weight:800}
+
+.diff-stats{
+  display:flex;gap:8px;flex-wrap:wrap;
+  padding:10px 14px;
+  background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+  flex-shrink:0;
+  font-family:var(--font-mono);font-size:11px;
+}
+.diff-stat{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:4px;
+  border:1px solid var(--grey-200);
+  background:var(--grey-50);
+}
+.diff-stat strong{font-size:13px;font-weight:800}
+.diff-stat.added{background:var(--green-soft);border-color:var(--green-emeraude);color:var(--green-bourgeon)}
+.diff-stat.updated{background:var(--amber-soft);border-color:var(--yellow-tournesol);color:#8a5e00}
+.diff-stat.removed{background:var(--red-marianne-soft);border-color:var(--red-marianne);color:var(--red-marianne)}
+.diff-stat.unchanged{background:var(--grey-50);color:var(--grey-700)}
+.diff-stat.snapshot{background:var(--blue-eu-soft);border-color:var(--reunion-blue);color:var(--reunion-blue)}
+
+.pagination-bar{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+  padding:12px 14px;
+  background:var(--white);
+  border-top:1px solid var(--grey-200);
+  border-bottom:1px solid var(--grey-200);
+  flex-shrink:0;
+}
+.pagination-info{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--grey-700);font-weight:600;
+}
+.pagination-info strong{color:var(--reunion-blue);font-size:13px}
+.pagination-spacer{flex:1}
+.page-btn{
+  background:var(--white);
+  color:var(--grey-900);
+  border:1px solid var(--grey-200);
+  font-size:12px;font-weight:600;
+  padding:6px 12px;border-radius:4px;
+  cursor:pointer;transition:all 0.15s;
+  min-width:36px;
+  display:inline-flex;align-items:center;justify-content:center;gap:4px;
+}
+.page-btn:hover:not(:disabled){
+  border-color:var(--reunion-blue);
+  color:var(--reunion-blue);
+  background:var(--blue-eu-soft);
+}
+.page-btn:disabled{opacity:0.4;cursor:not-allowed}
+.page-input{
+  width:60px;text-align:center;
+  padding:6px 8px;font-size:12px;
+  font-family:var(--font-mono);font-weight:700;
+  border:1px solid var(--grey-200);
+  border-radius:4px;
+  background:var(--white);
+  color:var(--reunion-blue);
+}
+.page-input:focus{
+  outline:none;border-color:var(--reunion-blue);
+  box-shadow:0 0 0 2px var(--blue-eu-soft);
+}
+.page-select{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-radius:4px;
+  color:var(--grey-900);
+  padding:6px 8px;font-size:12px;
+  font-family:var(--font-sans);
+}
+.page-select:focus{
+  outline:none;border-color:var(--reunion-blue);
+}
+
+.export-group{
+  display:flex;gap:8px;
+  padding:12px 14px;
+  border-top:1px solid var(--grey-200);
+  background:var(--white);flex-shrink:0;
+  flex-wrap:wrap;
+}
+.export-btn{
+  flex:1;min-width:120px;
+  background:var(--white);
+  color:var(--grey-900);
+  border:1px solid var(--grey-200);
+  font-size:12px;font-weight:600;
+  padding:10px 14px;border-radius:4px;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.export-btn:hover{
+  border-color:var(--reunion-blue);
+  color:var(--reunion-blue);
+  background:var(--blue-eu-soft);
+}
+.export-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+/* Colonne droite */
+.right{
+  background:var(--white);
+  border-left:1px solid var(--grey-200);
+  display:flex;flex-direction:column;
+  overflow:hidden;min-height:0;
+}
+.rs-head{
+  padding:14px 16px;
+  border-bottom:1px solid var(--grey-200);
+  background:var(--grey-50);
+  font-size:12px;font-weight:700;
+  color:var(--reunion-blue);
+  letter-spacing:0.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+.rs-head::before{
+  content:'';width:4px;height:14px;
+  background:var(--reunion-volcano);
+}
+.rs-body{
+  flex:1;overflow-y:auto;padding:12px;
+  min-height:0;
+}
+
+.intel-panel{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  border-radius:4px;margin-bottom:10px;
+  overflow:hidden;
+}
+.intel-head{
+  padding:9px 12px;
+  background:var(--grey-50);
+  border-bottom:1px solid var(--grey-200);
+  font-size:11px;font-weight:700;
+  color:var(--reunion-blue);
+  letter-spacing:0.5px;text-transform:uppercase;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.intel-body{padding:10px}
+.intel-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid var(--grey-100);
+  font-size:12px;
+}
+.intel-row:last-child{border-bottom:none}
+.intel-row .k{color:var(--grey-700)}
+.intel-row .v{
+  color:var(--grey-900);font-weight:700;text-align:right;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  max-width:170px;font-family:var(--font-mono);font-size:11px;
+}
+.intel-row .v.cyan{color:var(--reunion-blue)}
+.intel-row .v.green{color:var(--green-bourgeon)}
+.intel-row .v.amber{color:#8a5e00}
+.intel-row .v.red{color:var(--red-marianne)}
+
+.activity-item{
+  display:flex;justify-content:space-between;
+  padding:6px 0;border-bottom:1px solid var(--grey-100);
+  font-family:var(--font-mono);font-size:11px;
+}
+.activity-item:last-child{border-bottom:none}
+.activity-item .q{
+  color:var(--grey-900);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  max-width:180px;font-weight:600;
+}
+.activity-item .t{
+  color:var(--grey-500);flex-shrink:0;margin-left:8px;
+}
+
+/* Modal comparateur */
+.diff-modal{
+  position:fixed;inset:0;z-index:2000;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.diff-modal.show{display:flex}
+.diff-backdrop{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+}
+.diff-content{
+  position:relative;
+  background:var(--white);
+  border-radius:6px;
+  max-width:1200px;width:100%;
+  max-height:92vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+.diff-header{
+  padding:16px 20px;
+  border-bottom:1px solid var(--grey-200);
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;
+  background:var(--grey-50);flex-shrink:0;
+}
+.diff-header h2{
+  font-size:15px;font-weight:700;
+  color:var(--reunion-blue);
+  display:flex;align-items:center;gap:10px;
+  flex:1;min-width:0;
+}
+.diff-header h2 .title{
+  overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;max-width:600px;
+}
+.diff-header .badge{
+  font-family:var(--font-mono);font-size:10px;
+  padding:3px 8px;border-radius:3px;
+  background:var(--amber-soft);color:#8a5e00;
+  font-weight:700;letter-spacing:0.5px;
+}
+.diff-close{
+  background:transparent;border:none;
+  color:var(--grey-500);cursor:pointer;
+  font-size:20px;padding:4px 8px;border-radius:4px;
+  transition:all 0.15s;
+}
+.diff-close:hover{background:var(--grey-100);color:var(--grey-900)}
+
+.diff-toolbar{
+  padding:10px 20px;
+  background:var(--white);
+  border-bottom:1px solid var(--grey-200);
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  font-size:12px;flex-shrink:0;
+}
+.diff-toolbar .legend{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 8px;border-radius:3px;
+  font-family:var(--font-mono);font-size:10px;
+}
+.diff-toolbar .legend.before{
+  background:var(--red-marianne-soft);color:var(--red-marianne);
+}
+.diff-toolbar .legend.after{
+  background:var(--green-soft);color:var(--green-bourgeon);
+}
+.diff-toolbar .legend.changed{
+  background:var(--yellow-tournesol);color:var(--grey-900);
+}
+.diff-toolbar .spacer{flex:1}
+
+.diff-btn{
+  background:var(--white);
+  border:1px solid var(--grey-200);
+  color:var(--grey-700);
+  font-size:11px;font-weight:600;
+  padding:6px 12px;border-radius:4px;
+  cursor:pointer;transition:all 0.15s;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.diff-btn:hover{
+  border-color:var(--reunion-blue);
+  color:var(--reunion-blue);
+  background:var(--blue-eu-soft);
+}
+.diff-btn.primary{
+  background:var(--reunion-blue);color:var(--white);
+  border-color:var(--reunion-blue);
+}
+.diff-btn.primary:hover{background:var(--blue-eu-hi)}
+.diff-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+.diff-body{
+  flex:1;overflow-y:auto;padding:16px 20px;
+  min-height:0;
+}
+.diff-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:800px){
+  .diff-grid{grid-template-columns:1fr}
+}
+.diff-col{
+  border:1px solid var(--grey-200);
+  border-radius:4px;
+  overflow:hidden;
+}
+.diff-col.before{border-top:3px solid var(--red-marianne)}
+.diff-col.after{border-top:3px solid var(--green-emeraude)}
+.diff-col-title{
+  padding:8px 12px;
+  background:var(--grey-50);
+  border-bottom:1px solid var(--grey-200);
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.5px;
+  display:flex;align-items:center;gap:6px;
+}
+.diff-col.before .diff-col-title{color:var(--red-marianne)}
+.diff-col.after  .diff-col-title{color:var(--green-bourgeon)}
+.diff-field{
+  padding:8px 12px;
+  border-bottom:1px solid var(--grey-100);
+  font-size:12px;
+}
+.diff-field:last-child{border-bottom:none}
+.diff-field.changed{
+  background:var(--amber-soft);
+  position:relative;
+}
+.diff-field.changed::before{
+  content:'●';
+  position:absolute;left:4px;top:10px;
+  color:var(--yellow-tournesol);
+  font-size:8px;
+}
+.diff-field-label{
+  font-family:var(--font-mono);font-size:10px;
+  color:var(--grey-500);text-transform:uppercase;
+  letter-spacing:0.5px;margin-bottom:3px;
+}
+.diff-field-value{
+  color:var(--grey-900);line-height:1.4;
+  word-break:break-word;
+}
+.diff-field-value.empty{
+  color:var(--grey-500);font-style:italic;
+}
+.diff-field-value a{
+  color:var(--reunion-blue);text-decoration:none;
+}
+.diff-field-value a:hover{text-decoration:underline}
+.diff-summary{
+  margin-bottom:16px;
+  padding:12px 16px;
+  background:var(--blue-eu-soft);
+  border-radius:4px;
+  border-left:4px solid var(--reunion-blue);
+  font-size:12px;
+  color:var(--grey-900);
+}
+.diff-summary strong{color:var(--reunion-blue)}
+.diff-footer{
+  padding:12px 20px;
+  border-top:1px solid var(--grey-200);
+  background:var(--grey-50);
+  display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;
+  flex-shrink:0;
+}
+
+/* Toast auto-refresh */
+.autorefresh-toast{
+  position:fixed;bottom:24px;right:24px;z-index:3000;
+  background:var(--white);
+  border:1px solid var(--reunion-blue);
+  border-left:4px solid var(--green-emeraude);
+  border-radius:4px;padding:12px 18px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.15);
+  font-size:13px;color:var(--grey-900);
+  max-width:380px;
+  transform:translateY(120%);
+  transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.autorefresh-toast.show{transform:translateY(0)}
+.autorefresh-toast strong{color:var(--reunion-blue)}
+.autorefresh-toast .close{
+  position:absolute;top:6px;right:8px;
+  background:transparent;border:none;
+  color:var(--grey-500);cursor:pointer;font-size:14px;
+}
+.autorefresh-toast .close:hover{color:var(--grey-900)}
+
+/* Responsive */
+@media(max-width:900px){
+  .app{display:flex;flex-direction:column;height:auto;min-height:calc(100vh - 130px)}
+  .sidebar{order:1;width:100%;border-right:none;border-bottom:1px solid var(--grey-200)}
+  .sb-list{max-height:240px}
+  .center{order:2;width:100%}
+  .results{max-height:60vh}
+  .right{order:3;width:100%;border-left:none;border-top:1px solid var(--grey-200)}
+  .tabs{order:3;width:100%}
+}
+@media(max-width:600px){
+  .bloc-marque{flex-direction:column;align-items:flex-start;padding:10px 12px}
+  .bloc-marque-logo{border-right:none;border-bottom:1px solid var(--grey-200);padding:0 0 6px 0}
+  .brand{font-size:13px;width:100%;justify-content:center}
+  .topbar-right{width:100%;justify-content:center;gap:12px;padding:6px 0;
+    border-top:1px solid var(--grey-200)}
+  .search-bar{padding:12px}
+  .search-bar input[type=text]{font-size:13px}
+  .search-btn{padding:11px 14px;font-size:12px}
+  .result-card{padding:12px}
+  .rc-title{font-size:13px}
+  .rc-desc{font-size:11px}
+  .pagination-bar{padding:10px;gap:6px}
+  .page-btn{padding:5px 10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="reunion-band"></div>
+
+<div class="bloc-marque">
+  <div class="bloc-marque-logo">La Réunion<br>974</div>
+  <div class="bloc-marque-devise">
+    <em>Veille</em>
+    <em>Open Data</em>
+    <em>Continue</em>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="dot" id="statusDot"></span>
+    MONITOR LA RÉUNION
+    <span class="sub">/ 974 · veille</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="all">
+      📋 Tous <span class="count" id="countAll">0</span>
+    </button>
+    <button class="tab" data-tab="added">
+      🆕 Nouveaux <span class="count" id="countAdded">0</span>
+    </button>
+    <button class="tab" data-tab="updated">
+      📝 Mis à jour <span class="count" id="countUpdated">0</span>
+    </button>
+    <button class="tab" data-tab="removed">
+      ❌ Disparus <span class="count" id="countRemoved">0</span>
+    </button>
+    <button class="tab" data-tab="charts">
+      📊 Graphiques
+    </button>
+  </div>
+
+  <div class="topbar-right">
+    <div class="autorefresh on" id="autoRefreshToggle" title="Auto-refresh toutes les 5 min">
+      <span class="autorefresh-switch"></span>
+      <span>AUTO</span>
+      <span class="autorefresh-countdown" id="autoRefreshCountdown">5:00</span>
+    </div>
+    <div class="topbar-stat"><span>SYNC</span><span class="val green" id="tbStatus">—</span></div>
+    <div class="topbar-stat"><span>DATASETS</span><span class="val" id="tbCount">—</span></div>
+    <div class="topbar-stat"><span>DERNIER</span><span class="val amber" id="tbLast">—</span></div>
+    <div class="topbar-stat"><span>UPTIME</span><span class="val" id="tbUptime">—</span></div>
+  </div>
+</div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">🏷️ Catégories thématiques</div>
+      <div class="sb-count" id="sbCount">— catégories · — actives</div>
+    </div>
+    <div class="sb-actions">
+      <button id="btnSelectAll">Tout</button>
+      <button id="btnSelectNone">Aucun</button>
+      <button id="btnSelectKey">Clés</button>
+    </div>
+    <div class="sb-search">
+      <input type="text" id="sourceSearch" placeholder="🔍 Filtrer les catégories...">
+    </div>
+    <div class="sb-list" id="sbList"></div>
+  </aside>
+
+  <main class="center">
+
+    <div class="search-bar">
+      <input type="text" id="queryInput" placeholder="🔍 Rechercher un dataset, une organisation, un tag…"
+             autocomplete="off" value="">
+      <select id="sortSelect">
+        <option value="recent">Plus récents</option>
+        <option value="relevance">Pertinence</option>
+        <option value="title">Titre A→Z</option>
+        <option value="org">Organisation</option>
+      </select>
+      <button class="search-btn" id="searchBtn">🔍 FILTRER</button>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-view="results">📋 Liste</button>
+      <button class="mode-tab" data-view="json">📄 JSON brut</button>
+      <button class="mode-tab" data-view="timing">⏱️ Statistiques</button>
+    </div>
+
+    <div class="diff-stats" id="diffStats">
+      <div class="diff-stat snapshot">
+        <span>💾</span>
+        <strong id="statSnapshot">—</strong>
+        <span>snapshot</span>
+      </div>
+      <div class="diff-stat added">
+        <span>🆕</span>
+        <strong id="statAdded">0</strong>
+        <span>nouveaux</span>
+      </div>
+      <div class="diff-stat updated">
+        <span>📝</span>
+        <strong id="statUpdated">0</strong>
+        <span>mis à jour</span>
+      </div>
+      <div class="diff-stat removed">
+        <span>❌</span>
+        <strong id="statRemoved">0</strong>
+        <span>disparus</span>
+      </div>
+      <div class="diff-stat unchanged">
+        <span>=</span>
+        <strong id="statUnchanged">0</strong>
+        <span>inchangés</span>
+      </div>
+    </div>
+
+    <div class="pagination-bar" id="paginationBar" hidden>
+      <span class="pagination-info" id="paginationInfo">—</span>
+      <span class="pagination-spacer"></span>
+      <button class="page-btn" id="pageFirst" title="Première page">⏮</button>
+      <button class="page-btn" id="pagePrev" title="Page précédente">←</button>
+      <input type="number" class="page-input" id="pageInput" min="1" value="1" />
+      <span style="font-size:12px;color:var(--grey-500)" id="pageTotal">/ —</span>
+      <button class="page-btn" id="pageNext" title="Page suivante">→</button>
+      <button class="page-btn" id="pageLast" title="Dernière page">⏭</button>
+      <select class="page-select" id="pageSizeSelect">
+        <option value="10">10 / page</option>
+        <option value="25" selected>25 / page</option>
+        <option value="50">50 / page</option>
+        <option value="100">100 / page</option>
+      </select>
+    </div>
+
+    <div class="results" id="resultsArea">
+      <div class="loading">
+        <div class="spin"></div>
+        Chargement du JSON…
+      </div>
+    </div>
+
+    <div class="export-group">
+      <button class="export-btn" id="exportJson" disabled>📥 Export JSON filtré</button>
+      <button class="export-btn" id="exportCsv" disabled>📥 Export CSV filtré</button>
+      <button class="export-btn" id="refreshBtn">⟳ Rafraîchir</button>
+      <button class="export-btn" id="resetBtn">↺ Reset snapshot</button>
+    </div>
+  </main>
+
+  <aside class="right" id="rightPanel">
+    <div class="rs-head">Intelligence</div>
+    <div class="rs-body">
+
+      <div class="intel-panel">
+        <div class="intel-head"><span>💚 ÉTAT DU MONITOR</span></div>
+        <div class="intel-body">
+          <div class="intel-row"><span class="k">Statut</span><span class="v green" id="ivStatus">—</span></div>
+          <div class="intel-row"><span class="k">Dernier refresh</span><span class="v cyan" id="ivLastRefresh">—</span></div>
+          <div class="intel-row"><span class="k">Source</span><span class="v cyan" id="ivSource">—</span></div>
+          <div class="intel-row"><span class="k">Snapshot</span><span class="v amber" id="ivSnapshot">—</span></div>
+          <div class="intel-row"><span class="k">Uptime session</span><span class="v cyan" id="ivUptime">—</span></div>
+        </div>
+      </div>
+
+      <div class="intel-panel">
+        <div class="intel-head"><span>📊 DERNIER CHANGEMENT</span></div>
+        <div class="intel-body">
+          <div class="intel-row"><span class="k">Datasets</span><span class="v cyan" id="ivTotal">—</span></div>
+          <div class="intel-row"><span class="k">Delta</span><span class="v amber" id="ivDelta">—</span></div>
+          <div class="intel-row"><span class="k">Nouveaux</span><span class="v green" id="ivAdded">—</span></div>
+          <div class="intel-row"><span class="k">Mis à jour</span><span class="v amber" id="ivUpdated">—</span></div>
+          <div class="intel-row"><span class="k">Disparus</span><span class="v red" id="ivRemoved">—</span></div>
+          <div class="intel-row"><span class="k">Temps analyse</span><span class="v amber" id="ivTime">—</span></div>
+        </div>
+      </div>
+
+      <div class="intel-panel">
+        <div class="intel-head"><span>🏷️ RÉPARTITION CATÉGORIES</span></div>
+        <div class="intel-body" id="catBreakdown">
+          <div style="text-align:center;color:var(--grey-500);font-size:11px;padding:8px">
+            Aucune donnée
+          </div>
+        </div>
+      </div>
+
+      <div class="intel-panel">
+        <div class="intel-head"><span>🕐 ACTIVITÉ RÉCENTE</span></div>
+        <div class="intel-body" id="activityList">
+          <div style="text-align:center;color:var(--grey-500);font-size:11px;padding:8px">
+            Aucune activité
+          </div>
+        </div>
+      </div>
+
+      <div class="intel-panel">
+        <div class="intel-head"><span>⚙️ CONFIGURATION</span></div>
+        <div class="intel-body">
+          <div class="intel-row"><span class="k">JSON source</span><span class="v cyan">reunion_974_v4.json</span></div>
+          <div class="intel-row"><span class="k">Mode</span><span class="v">veille continue</span></div>
+          <div class="intel-row"><span class="k">Stockage</span><span class="v green">localStorage</span></div>
+          <div class="intel-row"><span class="k">Historique</span><span class="v amber" id="cfgHistory">—</span></div>
+          <div class="intel-row"><span class="k">Filtre</span><span class="v">v4 (974)</span></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Modal comparateur -->
+<div class="diff-modal" id="diffModal">
+  <div class="diff-backdrop" data-diff-close></div>
+  <div class="diff-content">
+    <div class="diff-header">
+      <h2>
+        🔍 Comparaison
+        <span class="badge" id="diffBadge">MISE À JOUR</span>
+        <span class="title" id="diffTitle">—</span>
+      </h2>
+      <button class="diff-close" data-diff-close>✕</button>
+    </div>
+    <div class="diff-toolbar">
+      <span class="legend before">● Avant</span>
+      <span class="legend after">● Après</span>
+      <span class="legend changed">● Champ modifié</span>
+      <span class="spacer"></span>
+      <button class="diff-btn" id="diffToggleOnlyChanged">🎯 Voir seulement les changements</button>
+      <button class="diff-btn" id="diffCopyBefore">📋 Copier l'ancien</button>
+      <button class="diff-btn primary" id="diffOpenUrl" disabled>🌐 Ouvrir la source</button>
+    </div>
+    <div class="diff-body">
+      <div id="diffSummary"></div>
+      <div class="diff-grid" id="diffGrid"></div>
+    </div>
+    <div class="diff-footer">
+      <button class="diff-btn" data-diff-close>Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast auto-refresh -->
+<div class="autorefresh-toast" id="autoRefreshToast">
+  <button class="close" onclick="document.getElementById('autoRefreshToast').classList.remove('show')">✕</button>
+  <div id="autoRefreshToastContent"></div>
+</div>
+
+<script>
+/* ============================================================
+   MONITOR LA RÉUNION 974 — Client-side veille continue
+   ============================================================ */
+
+const JSON_URL = 'data/reunion_974_v4.json';
+const STORAGE_KEY = 'monitor974:snapshot';
+const HISTORY_KEY = 'monitor974:history';
+const MAX_HISTORY = 30;
+
+/* ============================================================
+   Catégories thématiques
+   ============================================================ */
+
+const CATEGORIES = {
+  eau: {
+    name: 'Eau & Hydrographie', flag: '💧',
+    keywords: ['eau', 'hydro', 'cours', 'riviere', 'bassin', 'masse', 'carthage',
+               'topage', 'sandre', 'nappe', 'souterraine', 'cotiere', 'littoral',
+               'mer', 'ocean', 'dce', 'sage', 'station', 'prelevement',
+               'zone sensible', 'obstacle', 'bdlisa', 'hydrogeologique'],
+  },
+  marin: {
+    name: 'Milieu marin & récifs', flag: '🌊',
+    keywords: ['ifremer', 'litto3d', 'bathym', 'recif', 'corail', 'corallienne',
+               'hyperspectral', 'hydrorun', 'homonim', 'cartomar', 'polmar',
+               'shom', 'littoral', 'mnt', 'houle', 'courant', 'marin'],
+  },
+  energie: {
+    name: 'Énergie & Réseaux', flag: '⚡',
+    keywords: ['edf', 'electri', 'pylone', 'ligne', 'htb', 'hta', 'bt ',
+               'reseau', 'recharge', 'vehicule electrique', 'signal reseau'],
+  },
+  transport: {
+    name: 'Transports & Mobilité', flag: '🚌',
+    keywords: ['car jaune', 'gtfs', 'transport', 'mobilite', 'cyclable',
+               'velo', 'altervelo', 'civis'],
+  },
+  administration: {
+    name: 'Administration & Politique', flag: '🏛️',
+    keywords: ['mandat', 'maire', 'municipale', 'commune', 'region',
+               'departement', 'marche public', 'acheteur', 'concession',
+               'asile', 'immigration', 'eloignement', 'code postal', 'insee'],
+  },
+  risques: {
+    name: 'Risques & Environnement', flag: '⚠️',
+    keywords: ['seveso', 'risque', 'inondation', 'tri ', 'georisque',
+               'icpe', 'installation classee', 'ecoulement'],
+  },
+  meteo: {
+    name: 'Météo & Climat', flag: '🌦️',
+    keywords: ['meteo', 'arome', 'climat', 'archive', 'tempete',
+               'cyclone', 'precipitation'],
+  },
+  education: {
+    name: 'Éducation & Culture', flag: '🎓',
+    keywords: ['onisep', 'ideo', 'formation', 'spectacle', 'culture',
+               'opera', 'ecole', 'education'],
+  },
+  sante: {
+    name: 'Santé & Social', flag: '🏥',
+    keywords: ['sante', 'garde', 'enfant', 'finess', 'cnam',
+               'solidarite', 'social', 'hopital'],
+  },
+  recherche: {
+    name: 'Recherche & Biodiversité', flag: '🔬',
+    keywords: ['cetace', 'tortue', 'biodiversite', 'globice', 'zenodo',
+               'recherche', 'espece'],
+  },
+};
+
+/* ============================================================
+   État global
+   ============================================================ */
+
+const state = {
+  allDatasets: [],
+  filtered: [],
+  changes: null,
+  activeCategories: new Set(),
+  currentTab: 'all',
+  currentView: 'results',
+  search: '',
+  sort: 'recent',
+  page: 1,
+  pageSize: 25,
+  totalFiltered: 0,
+  uptimeStart: Date.now(),
+  activities: [],
+  lastRefresh: null,
+};
+
+/* ============================================================
+   Utilitaires
+   ============================================================ */
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function normalize(str){
+  if (!str) return '';
+  return str.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function formatUptime(ms){
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m ${sec}s`;
+  return `${sec}s`;
+}
+
+function formatRelative(iso){
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    const diff = Date.now() - d.getTime();
+    const sec = Math.floor(diff / 1000);
+    const min = Math.floor(sec / 60);
+    const hr = Math.floor(min / 60);
+    const day = Math.floor(hr / 24);
+    if (sec < 60) return "à l'instant";
+    if (min < 60) return `il y a ${min} min`;
+    if (hr < 24) return `il y a ${hr} h`;
+    if (day < 30) return `il y a ${day} j`;
+    if (day < 365) return `il y a ${Math.floor(day / 30)} mois`;
+    return `il y a ${Math.floor(day / 365)} an(s)`;
+  } catch { return iso; }
+}
+
+function hashDataset(item){
+  const relevant = { ...item };
+  delete relevant.id;
+  delete relevant.popularity;
+  const sorted = Object.keys(relevant).sort().reduce((acc, k) => {
+    acc[k] = relevant[k]; return acc;
+  }, {});
+  const blob = JSON.stringify(sorted);
+  let h = 5381;
+  for (let i = 0; i < blob.length; i++){
+    h = ((h << 5) + h) + blob.charCodeAt(i);
+  }
+  return (h >>> 0).toString(16).padStart(16, '0');
+}
+
+/* ============================================================
+   Détection catégorie
+   ============================================================ */
+
+function detectCategory(item){
+  const hay = normalize([
+    item.titre, item.organisation, item.tags, item.description
+  ].join(' '));
+
+  const scores = {};
+  for (const [key, cat] of Object.entries(CATEGORIES)){
+    let score = 0;
+    for (const kw of cat.keywords){
+      if (hay.includes(normalize(kw))) score++;
+    }
+    if (score > 0) scores[key] = score;
+  }
+  if (!Object.keys(scores).length) return 'autre';
+  return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+/* ============================================================
+   Persistance
+   ============================================================ */
+
+function loadSnapshot(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function saveSnapshot(datasets){
+  const snap = {
+    timestamp: new Date().toISOString(),
+    count: Object.keys(datasets).length,
+    datasets,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(snap));
+  return snap;
+}
+
+function clearSnapshot(){
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(HISTORY_KEY);
+}
+
+function loadHistory(){
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function pushHistory(entry){
+  const h = loadHistory();
+  h.push({ ...entry, timestamp: new Date().toISOString() });
+  if (h.length > MAX_HISTORY) h.splice(0, h.length - MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+}
+
+/* ============================================================
+   Chargement + diff
+   ============================================================ */
+
+async function loadJson(url){
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function indexDatasets(data){
+  const out = {};
+  for (const item of (data.results || [])){
+    if (!item.id) continue;
+    out[item.id] = {
+      id: item.id,
+      titre: item.titre || '(sans titre)',
+      url: item.url || '',
+      organisation: item.organisation || '',
+      portail: item.portail || '?',
+      pays: item.pays || '',
+      type_api: item.type_api || '',
+      last_update: item.last_update || null,
+      tags: item.tags || '',
+      description: item.description || '',
+      license: item.license || '',
+      category: detectCategory(item),
+      hash: hashDataset(item),
+    };
+  }
+  return out;
+}
+
+function diff(oldDs, newDs){
+  oldDs = oldDs || {};
+  newDs = newDs || {};
+  const oldIds = new Set(Object.keys(oldDs));
+  const newIds = new Set(Object.keys(newDs));
+
+  const added = [], removed = [], updated = [], unchanged = [];
+
+  for (const id of newIds){
+    if (!oldIds.has(id)){
+      added.push({ ...newDs[id], change: 'added' });
+    } else if (oldDs[id].hash !== newDs[id].hash){
+      updated.push({ ...newDs[id], change: 'updated', _old: oldDs[id] });
+    } else {
+      unchanged.push({ ...newDs[id], change: 'unchanged' });
+    }
+  }
+
+  for (const id of oldIds){
+    if (!newIds.has(id)){
+      removed.push({ ...oldDs[id], change: 'removed' });
+    }
+  }
+
+  return {
+    added, removed, updated, unchanged,
+    total_old: oldIds.size,
+    total_new: newIds.size,
+  };
+}
+
+/* ============================================================
+   Rendu — Sidebar catégories
+   ============================================================ */
+
+function renderCategories(){
+  const list = document.getElementById('sbList');
+  const search = normalize(document.getElementById('sourceSearch').value);
+
+  const counts = {};
+  for (const d of state.allDatasets){
+    counts[d.category] = (counts[d.category] || 0) + 1;
+  }
+
+  const items = [];
+  for (const [key, cat] of Object.entries(CATEGORIES)){
+    const n = counts[key] || 0;
+    if (search && !normalize(cat.name).includes(search) && !key.includes(search)) continue;
+    items.push({ key, name: cat.name, flag: cat.flag, count: n });
+  }
+  if (counts.autre && (!search || normalize('autre').includes(search))){
+    items.push({ key: 'autre', name: 'Autres', flag: '📦', count: counts.autre });
+  }
+
+  if (!items.length){
+    list.innerHTML = '<div class="loading" style="padding:20px;font-size:11px">Aucune catégorie</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(it => `
+    <div class="portal-item ${state.activeCategories.has(it.key) ? 'active' : ''}"
+         data-key="${it.key}" title="${escapeHtml(it.name)}">
+      <div class="portal-check">✓</div>
+      <span class="portal-flag">${it.flag}</span>
+      <div class="portal-info">
+        <div class="portal-name">${escapeHtml(it.name)}</div>
+        <div class="portal-type">${it.key}</div>
+      </div>
+      <span class="portal-count">${it.count}</span>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.portal-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.dataset.key;
+      if (state.activeCategories.has(key)) state.activeCategories.delete(key);
+      else state.activeCategories.add(key);
+      renderCategories();
+      applyFiltersAndRender();
+    });
+  });
+
+  const total = Object.keys(CATEGORIES).length + (counts.autre ? 1 : 0);
+  document.getElementById('sbCount').textContent =
+    `${total} catégories · ${state.activeCategories.size} actives`;
+
+  renderCategoryBreakdown(counts);
+}
+
+function renderCategoryBreakdown(counts){
+  const el = document.getElementById('catBreakdown');
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (!entries.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--grey-500);font-size:11px;padding:8px">Aucune donnée</div>';
+    return;
+  }
+  el.innerHTML = entries.map(([key, n]) => {
+    const cat = CATEGORIES[key] || { name: 'Autres', flag: '📦' };
+    return `
+      <div class="intel-row">
+        <span class="k">${cat.flag} ${escapeHtml(cat.name)}</span>
+        <span class="v cyan">${n}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   Filtrage
+   ============================================================ */
+
+function applyFilters(){
+  const search = normalize(state.search);
+  const tab = state.currentTab;
+
+  let base = state.allDatasets;
+
+  if (state.activeCategories.size > 0){
+    base = base.filter(d => state.activeCategories.has(d.category));
+  }
+
+  if (tab !== 'all' && tab !== 'charts'){
+    base = base.filter(d => d.change === tab);
+  }
+
+  if (search){
+    base = base.filter(d => {
+      const hay = normalize([
+        d.titre, d.organisation, d.tags, d.description, d.category
+      ].join(' '));
+      return hay.includes(search);
+    });
+  }
+
+  const sort = state.sort;
+  if (sort === 'title'){
+    base.sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
+  } else if (sort === 'org'){
+    base.sort((a, b) => (a.organisation || '').localeCompare(b.organisation || '', 'fr'));
+  } else if (sort === 'recent'){
+    base.sort((a, b) => (b.last_update || '').localeCompare(a.last_update || ''));
+  } else if (sort === 'relevance'){
+    const order = { added: 0, updated: 1, unchanged: 2, removed: 3 };
+    base.sort((a, b) => order[a.change] - order[b.change]);
+  }
+
+  state.filtered = base;
+  state.totalFiltered = base.length;
+}
+
+/* ============================================================
+   Rendu — Résultats
+   ============================================================ */
+
+function renderResults(){
+  const area = document.getElementById('resultsArea');
+  const total = state.filtered.length;
+
+  if (total === 0){
+    area.innerHTML = `
+      <div class="empty">
+        <div style="font-size:48px;margin-bottom:16px">📭</div>
+        <div style="font-weight:700;color:var(--grey-900);margin-bottom:8px">Aucun dataset</div>
+        <div>Aucun résultat ne correspond à vos filtres.</div>
+      </div>
+    `;
+    document.getElementById('paginationBar').hidden = true;
+    return;
+  }
+
+  const start = (state.page - 1) * state.pageSize;
+  const end = start + state.pageSize;
+  const slice = state.filtered.slice(start, end);
+
+  const changeBadge = {
+    added: '<span class="rc-badge change-added">🆕 Nouveau</span>',
+    updated: '<span class="rc-badge change-updated">📝 Mis à jour</span>',
+    removed: '<span class="rc-badge change-removed">❌ Disparu</span>',
+    unchanged: '',
+  };
+
+  const catColors = {
+    eau: '#0066cc', marin: '#00a95f', energie: '#ffb800',
+    transport: '#7b5cff', administration: '#e1000f', risques: '#d94d1e',
+    meteo: '#56d4dd', education: '#c678dd', sante: '#e06c75',
+    recherche: '#00a95f', autre: '#929292',
+  };
+
+  const html = slice.map(d => {
+    const cat = CATEGORIES[d.category] || { name: 'Autres', flag: '📦' };
+    const tags = (d.tags || '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 5);
+    const url = d.url || '#';
+    const color = catColors[d.category] || '#929292';
+    const clickable = ['updated', 'added', 'removed'].includes(d.change);
+
+    return `
+      <div class="result-card is-${d.change}"
+           data-dataset-id="${escapeHtml(d.id)}"
+           ${clickable ? 'data-clickable="true" title="Cliquer pour comparer"' : ''}>
+        <div class="rc-head">
+          <div class="rc-title">
+            <a href="${escapeHtml(url)}" target="_blank" rel="noopener">
+              ${escapeHtml(d.titre)}
+            </a>
+          </div>
+          <div class="rc-badges">
+            ${changeBadge[d.change] || ''}
+            <span class="rc-badge portal" style="background:${color}">
+              ${cat.flag} ${escapeHtml(cat.name)}
+            </span>
+            <span class="rc-badge src">${escapeHtml(d.type_api || '?')}</span>
+          </div>
+        </div>
+        <div class="rc-org">🏢 ${escapeHtml(d.organisation || '—')}</div>
+        ${d.description ? `<div class="rc-desc">${escapeHtml(d.description)}</div>` : ''}
+        <div class="rc-meta">
+          <span class="tag">📅 ${formatRelative(d.last_update)}</span>
+          <span class="tag">${escapeHtml(d.pays)} ${escapeHtml(d.portail)}</span>
+          ${d.license ? `<span class="tag">📜 ${escapeHtml(d.license)}</span>` : ''}
+          ${tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const header = `
+    <div style="font-size:12px;color:var(--grey-700);
+                margin-bottom:12px;padding:10px 14px;background:var(--white);
+                border-radius:4px;border-left:4px solid var(--reunion-blue);
+                box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+      <strong style="color:var(--reunion-blue)">${total.toLocaleString('fr-FR')} dataset(s)</strong>
+      affiché(s) ${start + 1}–${Math.min(end, total)}
+      · catégorie(s) : ${state.activeCategories.size || 'toutes'}
+      · onglet : ${state.currentTab}
+    </div>
+  `;
+
+  area.innerHTML = header + html;
+
+  // Clic sur carte
+  area.querySelectorAll('[data-clickable="true"]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A' || e.target.closest('a')) return;
+      const id = card.dataset.datasetId;
+      const item = state.allDatasets.find(x => x.id === id);
+      if (item) DiffViewer.open(item);
+    });
+  });
+
+  updatePaginationUI();
+}
+
+function updatePaginationUI(){
+  const bar = document.getElementById('paginationBar');
+  const info = document.getElementById('paginationInfo');
+  const input = document.getElementById('pageInput');
+  const totalEl = document.getElementById('pageTotal');
+  const first = document.getElementById('pageFirst');
+  const prev = document.getElementById('pagePrev');
+  const next = document.getElementById('pageNext');
+  const last = document.getElementById('pageLast');
+
+  const totalPages = Math.max(1, Math.ceil(state.totalFiltered / state.pageSize));
+  const current = state.page;
+
+  info.innerHTML = `<strong>${state.totalFiltered.toLocaleString('fr-FR')}</strong> résultats · page <strong>${current}</strong> / ${totalPages}`;
+  input.value = current;
+  input.max = totalPages;
+  totalEl.textContent = `/ ${totalPages}`;
+
+  first.disabled = current <= 1;
+  prev.disabled = current <= 1;
+  next.disabled = current >= totalPages;
+  last.disabled = current >= totalPages;
+
+  bar.hidden = false;
+}
+
+function applyFiltersAndRender(){
+  applyFilters();
+  state.page = 1;
+  renderResults();
+}
+
+/* ============================================================
+   Stats
+   ============================================================ */
+
+function renderStats(){
+  const c = state.changes;
+  if (!c) return;
+
+  document.getElementById('countAll').textContent = c.total_new;
+  document.getElementById('countAdded').textContent = c.added.length;
+  document.getElementById('countUpdated').textContent = c.updated.length;
+  document.getElementById('countRemoved').textContent = c.removed.length;
+
+  document.getElementById('statSnapshot').textContent = c.total_old;
+  document.getElementById('statAdded').textContent = c.added.length;
+  document.getElementById('statUpdated').textContent = c.updated.length;
+  document.getElementById('statRemoved').textContent = c.removed.length;
+  document.getElementById('statUnchanged').textContent = c.unchanged.length;
+
+  document.getElementById('tbCount').textContent = c.total_new;
+
+  document.getElementById('ivTotal').textContent = c.total_new;
+  const delta = c.total_new - c.total_old;
+  document.getElementById('ivDelta').textContent = c.total_old === 0
+    ? 'premier snapshot'
+    : (delta > 0 ? '+' : '') + delta;
+  document.getElementById('ivDelta').className = 'v ' +
+    (delta > 0 ? 'green' : delta < 0 ? 'red' : 'amber');
+  document.getElementById('ivAdded').textContent = c.added.length;
+  document.getElementById('ivUpdated').textContent = c.updated.length;
+  document.getElementById('ivRemoved').textContent = c.removed.length;
+
+  const status = document.getElementById('tbStatus');
+  const statusIv = document.getElementById('ivStatus');
+
+  if (c.total_old === 0){
+    status.textContent = 'INIT';
+    statusIv.textContent = '● INITIALISÉ';
+    statusIv.className = 'v amber';
+  } else if (c.added.length + c.updated.length + c.removed.length === 0){
+    status.textContent = 'STABLE';
+    statusIv.textContent = '● STABLE';
+    statusIv.className = 'v green';
+  } else {
+    status.textContent = 'CHANGÉ';
+    statusIv.textContent = '● CHANGEMENTS';
+    statusIv.className = 'v amber';
+  }
+}
+
+/* ============================================================
+   Activité
+   ============================================================ */
+
+function renderActivities(){
+  const el = document.getElementById('activityList');
+  if (!state.activities.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--grey-500);font-size:11px;padding:8px">Aucune activité</div>';
+    return;
+  }
+  el.innerHTML = state.activities.slice(0, 8).map(a => `
+    <div class="activity-item">
+      <span class="q">${escapeHtml(a.label)}</span>
+      <span class="t">${a.time.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})}</span>
+    </div>
+  `).join('');
+}
+
+function pushActivity(label){
+  state.activities.unshift({ label, time: new Date() });
+  state.activities = state.activities.slice(0, 10);
+  renderActivities();
+}
+
+/* ============================================================
+   Refresh
+   ============================================================ */
+
+async function refresh(){
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyse…';
+
+  const start = performance.now();
+  const area = document.getElementById('resultsArea');
+  area.innerHTML = `
+    <div class="loading">
+      <div class="spin"></div>
+      Chargement du JSON et comparaison avec le snapshot…
+    </div>
+  `;
+
+  try {
+    const data = await loadJson(JSON_URL);
+    const newDs = indexDatasets(data);
+
+    const prevSnap = loadSnapshot();
+    const prevDs = prevSnap ? prevSnap.datasets : {};
+    const changes = diff(prevDs, newDs);
+    state.changes = changes;
+
+    const all = [
+      ...changes.added,
+      ...changes.updated,
+      ...changes.unchanged,
+      ...changes.removed,
+    ];
+    state.allDatasets = all;
+
+    saveSnapshot(newDs);
+    pushHistory({
+      total_new: changes.total_new,
+      added: changes.added.length,
+      updated: changes.updated.length,
+      removed: changes.removed.length,
+    });
+
+    const elapsed = Math.round(performance.now() - start);
+    state.lastRefresh = new Date();
+
+    renderStats();
+    renderCategories();
+    applyFiltersAndRender();
+
+    document.getElementById('ivLastRefresh').textContent =
+      state.lastRefresh.toLocaleTimeString('fr-FR');
+    document.getElementById('ivSource').textContent = JSON_URL.replace('data/', '');
+    document.getElementById('ivSnapshot').textContent =
+      prevSnap ? formatRelative(prevSnap.timestamp) : 'nouveau';
+    document.getElementById('ivTime').textContent = elapsed + ' ms';
+    document.getElementById('cfgHistory').textContent =
+      loadHistory().length + ' entrées';
+    document.getElementById('tbLast').textContent =
+      state.lastRefresh.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+    const total = changes.added.length + changes.updated.length + changes.removed.length;
+    pushActivity(
+      total === 0
+        ? `✅ Stable (${changes.total_new})`
+        : `📈 +${changes.added.length} ~${changes.updated.length} -${changes.removed.length}`
+    );
+
+  } catch(err){
+    console.error(err);
+    area.innerHTML = `
+      <div class="error-box">
+        <strong>❌ Erreur :</strong> ${escapeHtml(err.message)}<br><br>
+        <span style="color:var(--grey-700)">Vérifie que <code>data/reunion_974_v4.json</code> est accessible.</span>
+      </div>
+    `;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⟳ Rafraîchir';
+  }
+}
+
+async function silentRefresh(){
+  const data = await loadJson(JSON_URL);
+  const newDs = indexDatasets(data);
+
+  const prevSnap = loadSnapshot();
+  const prevDs = prevSnap ? prevSnap.datasets : {};
+  const changes = diff(prevDs, newDs);
+  state.changes = changes;
+
+  const all = [
+    ...changes.added,
+    ...changes.updated,
+    ...changes.unchanged,
+    ...changes.removed,
+  ];
+  state.allDatasets = all;
+
+  saveSnapshot(newDs);
+  pushHistory({
+    total_new: changes.total_new,
+    added: changes.added.length,
+    updated: changes.updated.length,
+    removed: changes.removed.length,
+  });
+
+  state.lastRefresh = new Date();
+
+  renderStats();
+  renderCategories();
+  applyFiltersAndRender();
+
+  document.getElementById('ivLastRefresh').textContent =
+    state.lastRefresh.toLocaleTimeString('fr-FR');
+  document.getElementById('ivSnapshot').textContent =
+    prevSnap ? formatRelative(prevSnap.timestamp) : 'nouveau';
+  document.getElementById('tbLast').textContent =
+    state.lastRefresh.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+  return changes;
+}
+
+/* ============================================================
+   Auto-refresh
+   ============================================================ */
+
+const AutoRefresh = {
+  enabled: JSON.parse(localStorage.getItem('monitor974:autorefresh') ?? 'true'),
+  intervalMs: 5 * 60 * 1000,
+  tickMs: 1000,
+  remainingMs: 5 * 60 * 1000,
+  timer: null,
+  lastVisibleRefresh: Date.now(),
+  staleThresholdMs: 30 * 1000,
+  isRefreshing: false,
+
+  init(){
+    this.updateUI();
+    this.timer = setInterval(() => this.tick(), this.tickMs);
+
+    document.getElementById('autoRefreshToggle').addEventListener('click', () => {
+      this.enabled = !this.enabled;
+      localStorage.setItem('monitor974:autorefresh', JSON.stringify(this.enabled));
+      this.updateUI();
+      if (this.enabled){
+        this.remainingMs = this.intervalMs;
+        pushActivity('▶ Auto-refresh activé');
+      } else {
+        pushActivity('⏸ Auto-refresh désactivé');
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) return;
+      const idle = Date.now() - this.lastVisibleRefresh;
+      if (this.enabled && idle > this.staleThresholdMs && !this.isRefreshing){
+        this.remainingMs = 0;
+      }
+      this.lastVisibleRefresh = Date.now();
+    });
+  },
+
+  tick(){
+    if (document.hidden) return;
+    if (!this.enabled) return;
+    if (this.isRefreshing) return;
+
+    this.remainingMs -= this.tickMs;
+
+    if (this.remainingMs <= 0){
+      this.remainingMs = this.intervalMs;
+      this.triggerRefresh();
+    } else {
+      this.updateCountdown();
+    }
+  },
+
+  async triggerRefresh(){
+    if (this.isRefreshing) return;
+    this.isRefreshing = true;
+    this.updateCountdown();
+
+    try {
+      const before = {
+        total: state.changes?.total_new ?? 0,
+        added: state.changes?.added.length ?? 0,
+        updated: state.changes?.updated.length ?? 0,
+        removed: state.changes?.removed.length ?? 0,
+      };
+
+      await silentRefresh();
+
+      const after = {
+        total: state.changes?.total_new ?? 0,
+        added: state.changes?.added.length ?? 0,
+        updated: state.changes?.updated.length ?? 0,
+        removed: state.changes?.removed.length ?? 0,
+      };
+
+      const delta = {
+        total: after.total - before.total,
+        added: after.added - before.added,
+        updated: after.updated - before.updated,
+        removed: after.removed - before.removed,
+      };
+
+      const hasChanges = delta.added !== 0 || delta.updated !== 0 ||
+                         delta.removed !== 0 || delta.total !== 0;
+
+      if (hasChanges){
+        this.showToast(before, after, delta);
+        pushActivity(
+          `🔄 Auto : +${delta.added} ~${delta.updated} -${delta.removed}`
+        );
+      }
+    } catch(err){
+      console.error('[AutoRefresh] Erreur :', err);
+    } finally {
+      this.isRefreshing = false;
+      this.lastVisibleRefresh = Date.now();
+    }
+  },
+
+  updateCountdown(){
+    const el = document.getElementById('autoRefreshCountdown');
+    if (!el) return;
+    if (!this.enabled){ el.textContent = '—'; return; }
+    if (this.isRefreshing){ el.textContent = '⟳'; return; }
+    const s = Math.max(0, Math.ceil(this.remainingMs / 1000));
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    el.textContent = `${m}:${String(sec).padStart(2, '0')}`;
+  },
+
+  updateUI(){
+    const btn = document.getElementById('autoRefreshToggle');
+    if (!btn) return;
+    btn.classList.toggle('on', this.enabled);
+    btn.classList.toggle('off', !this.enabled);
+    this.updateCountdown();
+  },
+
+  showToast(before, after, delta){
+    const el = document.getElementById('autoRefreshToast');
+    const content = document.getElementById('autoRefreshToastContent');
+    if (!el || !content) return;
+
+    const parts = [];
+    if (delta.added > 0)   parts.push(`🆕 ${delta.added} nouveau(x)`);
+    if (delta.added < 0)   parts.push(`🆕 ${delta.added}`);
+    if (delta.updated > 0) parts.push(`📝 ${delta.updated} mise(s) à jour`);
+    if (delta.updated < 0) parts.push(`📝 ${delta.updated}`);
+    if (delta.removed > 0) parts.push(`❌ ${delta.removed} disparu(s)`);
+    if (delta.removed < 0) parts.push(`❌ ${delta.removed}`);
+    if (!parts.length) parts.push(`Total : ${before.total} → ${after.total}`);
+
+    content.innerHTML = `
+      <div style="font-weight:700;color:var(--reunion-blue);margin-bottom:6px">
+        🔄 Auto-refresh — changement détecté
+      </div>
+      <div style="font-size:12px;color:var(--grey-700);line-height:1.6">
+        ${parts.join(' · ')}
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--grey-500);font-family:var(--font-mono)">
+        ${new Date().toLocaleTimeString('fr-FR')}
+      </div>
+    `;
+
+    el.classList.add('show');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(() => el.classList.remove('show'), 8000);
+  }
+};
+
+/* ============================================================
+   Comparateur de versions
+   ============================================================ */
+
+const DiffViewer = {
+  current: null,
+  onlyChanged: false,
+
+  FIELDS: [
+    { key: 'titre',        label: 'Titre' },
+    { key: 'organisation', label: 'Organisation' },
+    { key: 'portail',      label: 'Portail' },
+    { key: 'pays',         label: 'Pays' },
+    { key: 'type_api',     label: 'Type API' },
+    { key: 'license',      label: 'Licence' },
+    { key: 'last_update',  label: 'Dernière mise à jour' },
+    { key: 'url',          label: 'URL' },
+    { key: 'tags',         label: 'Tags' },
+    { key: 'description',  label: 'Description' },
+    { key: 'hash',         label: 'Hash' },
+  ],
+
+  init(){
+    document.querySelectorAll('[data-diff-close]').forEach(el => {
+      el.addEventListener('click', () => this.close());
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && this.current) this.close();
+    });
+
+    document.getElementById('diffToggleOnlyChanged').addEventListener('click', () => {
+      this.onlyChanged = !this.onlyChanged;
+      this.render();
+    });
+
+    document.getElementById('diffCopyBefore').addEventListener('click', async () => {
+      if (!this.current) return;
+      const json = JSON.stringify(this.current.before, null, 2);
+      try {
+        await navigator.clipboard.writeText(json);
+        pushActivity('📋 Ancien état copié');
+      } catch {
+        pushActivity('❌ Copie impossible');
+      }
+    });
+
+    document.getElementById('diffOpenUrl').addEventListener('click', () => {
+      const url = this.current?.after?.url || this.current?.before?.url;
+      if (url) window.open(url, '_blank', 'noopener');
+    });
+  },
+
+  open(item){
+    if (!item) return;
+
+    const isUpdated = item.change === 'updated';
+    const isAdded   = item.change === 'added';
+    const isRemoved = item.change === 'removed';
+
+    let before = null, after = null;
+    if (isUpdated){
+      before = item._old;
+      after = item;
+    } else if (isAdded){
+      after = item;
+    } else if (isRemoved){
+      before = item;
+    } else {
+      after = item;
+    }
+
+    this.current = { before, after, change: item.change, item };
+
+    const badge = document.getElementById('diffBadge');
+    const badgeText = {
+      updated: '📝 MISE À JOUR',
+      added: '🆕 NOUVEAU',
+      removed: '❌ DISPARU',
+      unchanged: '= INCHANGÉ',
+    }[item.change] || '?';
+    badge.textContent = badgeText;
+
+    document.getElementById('diffTitle').textContent =
+      after?.titre || before?.titre || '(sans titre)';
+
+    const urlBtn = document.getElementById('diffOpenUrl');
+    urlBtn.disabled = !(after?.url || before?.url);
+
+    this.onlyChanged = false;
+    document.getElementById('diffToggleOnlyChanged').textContent =
+      '🎯 Voir seulement les changements';
+
+    this.render();
+    document.getElementById('diffModal').classList.add('show');
+    pushActivity(`🔍 Comparaison : ${(after?.titre || before?.titre || '').slice(0, 40)}…`);
+  },
+
+  close(){
+    document.getElementById('diffModal').classList.remove('show');
+    this.current = null;
+  },
+
+  render(){
+    if (!this.current) return;
+
+    const { before, after, change } = this.current;
+    const grid = document.getElementById('diffGrid');
+    const summary = document.getElementById('diffSummary');
+
+    if (change === 'updated'){
+      const changedFields = this.FIELDS.filter(f => {
+        const vB = before?.[f.key];
+        const vA = after?.[f.key];
+        return String(vB ?? '') !== String(vA ?? '');
+      });
+      summary.innerHTML = `
+        <div class="diff-summary">
+          <strong>${changedFields.length}</strong> champ(s) modifié(s) :
+          ${changedFields.map(f => `<code style="font-family:var(--font-mono);
+            background:var(--white);padding:1px 6px;border-radius:3px;
+            margin:0 4px;font-size:11px">${f.label}</code>`).join(' ')}
+        </div>
+      `;
+    } else if (change === 'added'){
+      summary.innerHTML = `
+        <div class="diff-summary" style="background:var(--green-soft);border-left-color:var(--green-emeraude)">
+          🆕 <strong>Nouveau dataset</strong> — absent du snapshot précédent.
+        </div>
+      `;
+    } else if (change === 'removed'){
+      summary.innerHTML = `
+        <div class="diff-summary" style="background:var(--red-marianne-soft);border-left-color:var(--red-marianne)">
+          ❌ <strong>Dataset disparu</strong> — présent dans le snapshot précédent, absent du JSON actuel.
+        </div>
+      `;
+    } else {
+      summary.innerHTML = `
+        <div class="diff-summary" style="background:var(--grey-50);border-left-color:var(--grey-500)">
+          = <strong>Dataset inchangé</strong> depuis le dernier snapshot.
+        </div>
+      `;
+    }
+
+    const fieldsToShow = this.onlyChanged
+      ? this.FIELDS.filter(f => {
+          const vB = before?.[f.key];
+          const vA = after?.[f.key];
+          return String(vB ?? '') !== String(vA ?? '');
+        })
+      : this.FIELDS;
+
+    if (fieldsToShow.length === 0){
+      grid.innerHTML = `<div class="diff-col after" style="grid-column:1/-1">
+        <div class="diff-col-title">✓ Aucun changement détecté</div>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = `
+      ${before !== null ? this.renderCol('before', '● Avant', before, after, fieldsToShow) : ''}
+      ${after !== null  ? this.renderCol('after', '● Après', after, before, fieldsToShow) : ''}
+    `;
+  },
+
+  renderCol(side, title, data, other, fields){
+    const cols = (this.current.before && this.current.after) ? '' : 'grid-column:1/-1;';
+
+    const html = fields.map(f => {
+      const vSelf = data?.[f.key];
+      const vOther = other?.[f.key];
+      const isChanged = String(vSelf ?? '') !== String(vOther ?? '');
+
+      let display;
+      if (vSelf === null || vSelf === undefined || vSelf === ''){
+        display = '<span class="empty">(vide)</span>';
+      } else if (f.key === 'url'){
+        display = `<a href="${escapeHtml(vSelf)}" target="_blank" rel="noopener">${escapeHtml(vSelf)}</a>`;
+      } else {
+        display = escapeHtml(String(vSelf));
+      }
+
+      return `
+        <div class="diff-field ${isChanged ? 'changed' : ''}">
+          <div class="diff-field-label">${escapeHtml(f.label)}</div>
+          <div class="diff-field-value">${display}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="diff-col ${side}" style="${cols}">
+        <div class="diff-col-title">${title}</div>
+        ${html}
+      </div>
+    `;
+  }
+};
+
+/* ============================================================
+   Export
+   ============================================================ */
+
+function exportJson(){
+  const blob = new Blob([JSON.stringify(state.filtered, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `reunion_974_export_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportCsv(){
+  const cols = ['id', 'titre', 'organisation', 'categorie', 'portail',
+                'last_update', 'change', 'url'];
+  const rows = [cols.join(',')];
+  for (const d of state.filtered){
+    const cat = CATEGORIES[d.category] || { name: 'Autres' };
+    const row = [
+      d.id, `"${(d.titre || '').replace(/"/g, '""')}"`,
+      `"${(d.organisation || '').replace(/"/g, '""')}"`,
+      `"${cat.name}"`, `"${d.portail}"`,
+      `"${d.last_update || ''}"`, d.change,
+      `"${d.url || ''}"`,
+    ];
+    rows.push(row.join(','));
+  }
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `reunion_974_export_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============================================================
+   Vues
+   ============================================================ */
+
+function renderJsonView(){
+  const preview = state.filtered.slice(0, 10);
+  document.getElementById('resultsArea').innerHTML = `
+    <div style="font-size:12px;color:var(--grey-700);
+                margin-bottom:12px;padding:10px 14px;background:var(--white);
+                border-radius:4px;border-left:4px solid var(--reunion-blue)">
+      <strong>${state.filtered.length} dataset(s)</strong> filtré(s) — aperçu 10 premiers
+    </div>
+    <pre style="font-family:var(--font-mono);font-size:11px;
+                color:var(--grey-700);background:var(--white);padding:16px;
+                border-radius:4px;overflow-x:auto;border:1px solid var(--grey-200);
+                max-height:70vh;line-height:1.5">
+${escapeHtml(JSON.stringify(preview, null, 2))}
+    </pre>
+  `;
+}
+
+function renderTimingView(){
+  const c = state.changes;
+  document.getElementById('resultsArea').innerHTML = `
+    <div class="intel-panel" style="max-width:560px;margin:0 auto">
+      <div class="intel-head"><span>⏱️ STATISTIQUES DE VEILLE</span></div>
+      <div class="intel-body">
+        <div class="intel-row"><span class="k">Snapshot précédent</span><span class="v cyan">${c?.total_old ?? 0} datasets</span></div>
+        <div class="intel-row"><span class="k">Snapshot actuel</span><span class="v green">${c?.total_new ?? 0} datasets</span></div>
+        <div class="intel-row"><span class="k">Delta</span><span class="v amber">${c ? ((c.total_new - c.total_old) > 0 ? '+' : '') + (c.total_new - c.total_old) : 0}</span></div>
+        <div class="intel-row"><span class="k">🆕 Nouveaux</span><span class="v green">${c?.added.length ?? 0}</span></div>
+        <div class="intel-row"><span class="k">📝 Mis à jour</span><span class="v amber">${c?.updated.length ?? 0}</span></div>
+        <div class="intel-row"><span class="k">❌ Disparus</span><span class="v red">${c?.removed.length ?? 0}</span></div>
+        <div class="intel-row"><span class="k">= Inchangés</span><span class="v">${c?.unchanged.length ?? 0}</span></div>
+        <div class="intel-row"><span class="k">Dernier refresh</span><span class="v cyan">${state.lastRefresh?.toLocaleString('fr-FR') ?? '—'}</span></div>
+        <div class="intel-row"><span class="k">Uptime session</span><span class="v cyan">${formatUptime(Date.now() - state.uptimeStart)}</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBar(label, value, max, color){
+  const pct = max > 0 ? Math.round(100 * value / max) : 0;
+  return `
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
+        <span style="color:var(--grey-700)">${escapeHtml(label)}</span>
+        <span style="font-family:var(--font-mono);color:var(--grey-900);font-weight:700">${value}</span>
+      </div>
+      <div style="background:var(--grey-100);height:6px;border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;transition:width 0.3s"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderChartsView(){
+  const c = state.changes;
+  const cats = {};
+  state.allDatasets.forEach(d => {
+    cats[d.category] = (cats[d.category] || 0) + 1;
+  });
+
+  document.getElementById('resultsArea').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;margin:0 auto">
+      <div class="intel-panel">
+        <div class="intel-head"><span>📊 CHANGEMENTS</span></div>
+        <div class="intel-body">
+          ${renderBar('🆕 Nouveaux', c?.added.length ?? 0, c?.total_new ?? 1, 'var(--green-emeraude)')}
+          ${renderBar('📝 Mis à jour', c?.updated.length ?? 0, c?.total_new ?? 1, 'var(--yellow-tournesol)')}
+          ${renderBar('❌ Disparus', c?.removed.length ?? 0, c?.total_new ?? 1, 'var(--red-marianne)')}
+          ${renderBar('= Inchangés', c?.unchanged.length ?? 0, c?.total_new ?? 1, 'var(--grey-500)')}
+        </div>
+      </div>
+      <div class="intel-panel">
+        <div class="intel-head"><span>🏷️ CATÉGORIES</span></div>
+        <div class="intel-body">
+          ${Object.entries(cats)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 8)
+            .map(([k, n]) => {
+              const cat = CATEGORIES[k] || { name: 'Autres', flag: '📦' };
+              return renderBar(`${cat.flag} ${cat.name}`, n, state.allDatasets.length, 'var(--reunion-blue)');
+            }).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   Événements
+   ============================================================ */
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    state.currentTab = t.dataset.tab;
+
+    if (state.currentTab === 'charts'){
+      document.querySelectorAll('.mode-tab').forEach(m => m.classList.remove('active'));
+      renderChartsView();
+    } else {
+      document.querySelectorAll('.mode-tab').forEach(m => m.classList.toggle('active', m.dataset.view === 'results'));
+      state.currentView = 'results';
+      applyFiltersAndRender();
+    }
+  });
+});
+
+document.querySelectorAll('.mode-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    state.currentView = t.dataset.view;
+
+    if (state.currentView === 'json'){
+      renderJsonView();
+    } else if (state.currentView === 'timing'){
+      renderTimingView();
+    } else {
+      renderResults();
+    }
+  });
+});
+
+document.getElementById('btnSelectAll').addEventListener('click', () => {
+  state.activeCategories = new Set(Object.keys(CATEGORIES));
+  renderCategories();
+  applyFiltersAndRender();
+});
+
+document.getElementById('btnSelectNone').addEventListener('click', () => {
+  state.activeCategories = new Set();
+  renderCategories();
+  applyFiltersAndRender();
+});
+
+document.getElementById('btnSelectKey').addEventListener('click', () => {
+  state.activeCategories = new Set(['eau', 'marin', 'energie', 'transport', 'risques']);
+  renderCategories();
+  applyFiltersAndRender();
+});
+
+document.getElementById('sourceSearch').addEventListener('input', renderCategories);
+
+document.getElementById('queryInput').addEventListener('input', e => {
+  state.search = e.target.value;
+  applyFiltersAndRender();
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  state.sort = e.target.value;
+  applyFiltersAndRender();
+});
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  state.search = document.getElementById('queryInput').value;
+  applyFiltersAndRender();
+});
+
+document.getElementById('pageFirst').addEventListener('click', () => { state.page = 1; renderResults(); });
+document.getElementById('pagePrev').addEventListener('click', () => { state.page = Math.max(1, state.page - 1); renderResults(); });
+document.getElementById('pageNext').addEventListener('click', () => { state.page++; renderResults(); });
+document.getElementById('pageLast').addEventListener('click', () => {
+  state.page = Math.max(1, Math.ceil(state.totalFiltered / state.pageSize));
+  renderResults();
+});
+document.getElementById('pageInput').addEventListener('change', e => {
+  const p = parseInt(e.target.value) || 1;
+  state.page = Math.max(1, Math.min(Math.ceil(state.totalFiltered / state.pageSize), p));
+  renderResults();
+});
+document.getElementById('pageSizeSelect').addEventListener('change', e => {
+  state.pageSize = parseInt(e.target.value);
+  state.page = 1;
+  renderResults();
+});
+
+document.getElementById('exportJson').addEventListener('click', exportJson);
+document.getElementById('exportCsv').addEventListener('click', exportCsv);
+
+document.getElementById('refreshBtn').addEventListener('click', refresh);
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (!confirm('Réinitialiser le snapshot ?\n\nLe prochain refresh considérera tous les datasets comme "nouveaux".')) return;
+  clearSnapshot();
+  state.activities = [];
+  renderActivities();
+  refresh();
+});
+
+setInterval(() => {
+  const uptime = formatUptime(Date.now() - state.uptimeStart);
+  document.getElementById('ivUptime').textContent = uptime;
+  document.getElementById('tbUptime').textContent = uptime;
+}, 1000);
+
+/* ============================================================
+   Init
+   ============================================================ */
+
+async function init(){
+  await refresh();
+  document.getElementById('exportJson').disabled = false;
+  document.getElementById('exportCsv').disabled = false;
+  AutoRefresh.init();
+  DiffViewer.init();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
